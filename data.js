@@ -18,15 +18,11 @@ const portfolioData = {
     googleBadgesUrl: "./assets/google_educator_badges.png",
     tagline: "Educator, Researcher & Academic Innovator in Wireless Sensor Networks, IoT, Deep Learning & Robotics",
     bio: "Associate Professor with more than 14 years of dedicated experience in higher education, curriculum design, and cutting-edge research in Electronics and Communication Engineering. Deputed to lead the academic structuring and establishment of the Department of Robotics and Artificial Intelligence at Manav Rachna University. Experienced University SWAYAM Coordinator with demonstrated excellence in mentoring students for premier national certifications. IBM-certified in Data Science and Machine Learning, with a track record encompassing 6 authored books, 13+ patents and design registrations, over 35 research publications in Scopus/IEEE/Q1-Q2 indexed journals and conferences, and elite NPTEL certifications from IITs and IISc.",
+
+    vision: "To foster innovation through the convergence of Wireless Sensor Networks, Edge AI, and Robotics, leveraging interdisciplinary engineering approaches to develop intelligent solutions for emerging challenges in smart agriculture, healthcare diagnostics, and cyber-physical security, while advancing learner-centric, outcome-based education that nurtures creativity, critical thinking, and problem-solving skills.",
+
     vision: "To bridge interdisciplinary engineering domains—marrying wireless sensor networks, edge AI, and robotics—to solve real-world problems in smart agriculture, healthcare diagnostics, and cyber-physical security, while cultivating learner-centric, outcome-based engineering education.",
-    socialLinks: {
-      linkedin: "https://www.linkedin.com/in/dr-piyush-charan-chattered-engineer-iei-fiete-smieee-lmiste-lmiei-6b840133/",
-      googleScholar: "https://scholar.google.com/citations?user=PiyushCharan",
-      scopus: "https://www.scopus.com/authid/detail.uri?authorId=57200277873",
-      vidwan: "https://vidwan.inflibnet.ac.in/profile/dr-piyush-charan",
-      slideshare: "https://www.slideshare.net/piyushcharan",
-      researchgate: "https://www.researchgate.net/profile/Piyush-Charan"
-    },
+
     keyTitles: [
       { title: "Chartered Engineer [India]", issuer: "Institution of Engineers (India)", badge: "CEng" },
       { title: "Fellow (FIETE)", issuer: "Institution of Electronics and Telecommunication Engineers", badge: "F-506999" },
