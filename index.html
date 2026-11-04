@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dr. Piyush Charan | Associate Professor & Researcher</title>
+  <meta name="description" content="Official Academic E-Portfolio of Dr. Piyush Charan, Associate Professor in ECE / Robotics & AI at Manav Rachna University. SMIEEE, FIETE, Chartered Engineer [India].">
+  <meta name="keywords" content="Dr. Piyush Charan, Manav Rachna University, Integral University, Wireless Sensor Networks, IoT, Robotics, Artificial Intelligence, DEAR Protocol, SMIEEE, FIETE">
+  <meta name="author" content="Dr. Piyush Charan">
+
+  <!-- Favicon / Tab Icon -->
+  <link rel="icon" type="image/jpeg" href="./assets/piyush_charan_profile.jpg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Cinzel"', 'serif'],
+          },
+          colors: {
+            navy: {
+              950: '#060d1a',
+              900: '#0a192f',
+              850: '#0f2444',
+              800: '#172a45',
+              700: '#203a63',
+            },
+            royal: {
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+            },
+            gold: {
+              300: '#fde68a',
+              400: '#facc15',
+              500: '#eab308',
+              600: '#ca8a04',
+              700: '#a16207',
+            }
+          },
+          boxShadow: {
+            'gold-glow': '0 0 25px rgba(234, 179, 8, 0.25)',
+            'royal-glow': '0 0 30px rgba(37, 99, 235, 0.25)',
+            'card-dark': '0 10px 30px -10px rgba(2, 12, 27, 0.7)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & ReactDOM 18 & Babel for seamless single-page execution -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Load Data -->
+  <script src="./data.js"></script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a192f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2563eb;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #eab308;
+    }
+
+    /* Print Styles for CV Download */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      a {
+        text-decoration: underline !important;
+        color: #1d4ed8 !important;
+      }
+    }
+    .print-only {
+      display: none;
+    }
+
+    /* Subtle animation keyframes */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.2); }
+      50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.45); }
+    }
+    .gold-pulse {
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="bg-[#060d1a] text-slate-100 font-sans antialiased transition-colors duration-300">
+  <div id="root"></div>
+
+  <!-- React Application Logic -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    function App() {
+      const data = window.portfolioData;
+      const [darkMode, setDarkMode] = useState(true);
+      const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+      const [activeSection, setActiveSection] = useState('home');
+      const [publicationFilter, setPublicationFilter] = useState('All');
+      const [pubSearchQuery, setPubSearchQuery] = useState('');
+      const [patentFilter, setPatentFilter] = useState('All');
+      const [fdpFilter, setFdpFilter] = useState('SWAYAM-NPTEL (IITs & IISc)');
+      const [showCvModal, setShowCvModal] = useState(false);
+      const [lightboxImg, setLightboxImg] = useState(null);
+      const [contactStatus, setContactStatus] = useState(null);
+      const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+
+      // Synchronize dark mode class with html element
+      useEffect(() => {
+        if (darkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }, [darkMode]);
+
+      // Active section spy on scroll
+      useEffect(() => {
+        const handleScroll = () => {
+          const sections = [
+            'home', 'about', 'qualifications', 'experience', 'teaching',
+            'research', 'projects', 'publications', 'patents', 'awards',
+            'memberships', 'fdps', 'leadership', 'gallery', 'contact'
+          ];
+          const scrollPos = window.scrollY + 200;
+
+          for (let i = sections.length - 1; i >= 0; i--) {
+            const el = document.getElementById(sections[i]);
+            if (el && el.offsetTop <= scrollPos) {
+              setActiveSection(sections[i]);
+              break;
+            }
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      // Filtered Publications
+      const filteredPublications = useMemo(() => {
+        return data.publications.filter(pub => {
+          const matchesCategory = 
+            publicationFilter === 'All' ? true :
+            publicationFilter === 'Journal' ? pub.type === 'Journal' :
+            publicationFilter === 'Conference' ? pub.type === 'Conference' :
+            publicationFilter === 'Book Chapter' ? pub.type === 'Book Chapter' : true;
+
+          const query = pubSearchQuery.toLowerCase().trim();
+          const matchesSearch = query === '' ||
+            pub.title.toLowerCase().includes(query) ||
+            pub.authors.toLowerCase().includes(query) ||
+            pub.venue.toLowerCase().includes(query) ||
+            (pub.indexing && pub.indexing.toLowerCase().includes(query)) ||
+            pub.year.toString().includes(query);
+
+          return matchesCategory && matchesSearch;
+        });
+      }, [publicationFilter, pubSearchQuery, data.publications]);
+
+      // Filtered Patents & IP
+      const filteredPatents = useMemo(() => {
+        if (patentFilter === 'All') return data.patents;
+        if (patentFilter === 'Granted') return data.patents.filter(p => p.type.includes('Granted'));
+        if (patentFilter === 'Design') return data.patents.filter(p => p.type.includes('Design'));
+        if (patentFilter === 'Published') return data.patents.filter(p => p.type.includes('Published'));
+        if (patentFilter === 'Copyright') return data.patents.filter(p => p.type.includes('Copyright'));
+        return data.patents;
+      }, [patentFilter, data.patents]);
+
+      const handleContactSubmit = (e) => {
+        e.preventDefault();
+        if (!formData.name || !formData.email || !formData.message) {
+          alert('Please fill out all required fields.');
+          return;
+        }
+        setContactStatus('sending');
+        setTimeout(() => {
+          setContactStatus('success');
+          // Formats a mailto fallback for direct sending
+          const mailtoUri = `mailto:${data.profile.email}?subject=${encodeURIComponent(formData.subject || 'Academic Portfolio Inquiry')}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+          window.location.href = mailtoUri;
+          setFormData({ name: '', email: '', subject: '', message: '' });
+          setTimeout(() => setContactStatus(null), 6000);
+        }, 800);
+      };
+
+      const copyCitation = (pub) => {
+        const citation = `${pub.authors} (${pub.year}). "${pub.title}." ${pub.venue}. ${pub.doi ? `DOI: ${pub.doi}` : ''}`;
+        navigator.clipboard.writeText(citation).then(() => {
+          alert('Citation copied to clipboard!');
+        });
+      };
+
+      const navItems = [
+        { id: 'about', label: 'About' },
+        { id: 'experience', label: 'Experience' },
+        { id: 'research', label: 'Research' },
+        { id: 'projects', label: 'Projects' },
+        { id: 'publications', label: 'Publications' },
+        { id: 'patents', label: 'Patents' },
+        { id: 'teaching', label: 'Teaching' },
+        { id: 'awards', label: 'Awards' },
+        { id: 'fdps', label: 'FDPs' },
+        { id: 'contact', label: 'Contact' },
+      ];
+
+      return (
+        <div className={`min-h-screen ${darkMode ? 'bg-[#060d1a] text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+          
+          {/* ==================== NAVIGATION BAR ==================== */}
+          <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md transition-all duration-300 no-print ${
+            darkMode ? 'bg-[#0a192f]/90 border-b border-slate-800/80' : 'bg-white/90 border-b border-slate-200'
+          }`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                {/* Brand / Title */}
+                <a href="#home" className="flex items-center space-x-3 group">
+                  <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-gold-500 shadow-md flex-shrink-0">
+                    <img src={data.profile.photoUrl} alt={data.profile.name} className="w-full h-full object-cover object-top" />
+                  </div>
+                  <div>
+                    <span className={`text-lg font-bold tracking-tight block ${darkMode ? 'text-white' : 'text-slate-900'} group-hover:text-gold-500 transition-colors`}>
+                      Piyush Charan
+                    </span>
+                  </div>
+                </a>
+                {/* Desktop Nav Links */}
+                <div className="hidden xl:flex items-center space-x-1">
+                  {navItems.map(item => (
+                    <a
+                      key={item.id}
+                      href={`#${item.id}`}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                        activeSection === item.id
+                          ? 'text-gold-400 bg-royal-700/20 font-semibold'
+                          : darkMode
+                            ? 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                            : 'text-slate-600 hover:text-royal-600 hover:bg-slate-100'
+                      }`}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+
+                {/* Right Action Icons & Buttons */}
+                <div className="hidden md:flex items-center space-x-3">
+                  
+                  {/* Theme Toggle */}
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                    className={`p-2 rounded-lg border transition-colors ${
+                      darkMode ? 'border-slate-700 text-gold-400 hover:bg-slate-800' : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    {darkMode ? (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                      </svg>
+                    )}
+                  </button>
+
+                  {/* Download CV Modal Trigger */}
+                  <button
+                    onClick={() => setShowCvModal(true)}
+                    className="flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-royal-600 to-royal-700 hover:from-royal-500 hover:to-royal-600 text-white shadow-md transition-all hover:scale-105"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Download CV</span>
+                  </button>
+
+                  {/* Get in Touch Quick CTA */}
+                  <a
+                    href="#contact"
+                    className="px-4 py-2 text-xs font-semibold rounded-lg border border-gold-500/80 text-gold-400 hover:bg-gold-500 hover:text-navy-950 transition-all"
+                  >
+                    Contact
+                  </a>
+                </div>
+
+                {/* Mobile Hamburger Button */}
+                <div className="flex items-center space-x-2 xl:hidden">
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    className="p-2 rounded-md border border-slate-700 text-gold-400"
+                  >
+                    {darkMode ? "☀" : "🌙"}
+                  </button>
+                  <button
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="p-2 rounded-md text-slate-300 hover:text-white focus:outline-none"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {isMobileMenuOpen ? (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      ) : (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                      )}
+                    </svg>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Mobile Dropdown Menu */}
+            {isMobileMenuOpen && (
+              <div className={`xl:hidden px-4 pt-2 pb-6 space-y-2 border-b ${
+                darkMode ? 'bg-navy-900 border-slate-800' : 'bg-white border-slate-200'
+              }`}>
+                {navItems.map(item => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-md text-sm font-medium hover:bg-royal-600/10 hover:text-gold-400"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div className="pt-3 flex space-x-2">
+                  <button
+                    onClick={() => { setShowCvModal(true); setIsMobileMenuOpen(false); }}
+                    className="flex-1 py-2 text-xs font-semibold text-center rounded-lg bg-royal-600 text-white"
+                  >
+                    Download CV
+                  </button>
+                  <a
+                    href="#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex-1 py-2 text-xs font-semibold text-center rounded-lg border border-gold-500 text-gold-400"
+                  >
+                    Contact
+                  </a>
+                </div>
+              </div>
+            )}
+          </nav>
+
+          {/* ==================== HERO SECTION ==================== */}
+          <section id="home" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+            {/* Subtle Gradient Backdrops */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-royal-600/15 via-gold-500/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                {/* Left Profile Info */}
+                <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+                  
+                  {/* Institutional Badge */}
+                  <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide border border-gold-500/40 bg-gold-500/10 text-gold-400">
+                    <span className="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
+                    <span>Manav Rachna University, Faridabad</span>
+                    <span className="text-slate-400">|</span>
+                    <span className="text-slate-300">Dept. of Interdisciplinary Engineering</span>
+                  </div>
+
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                    <span className={darkMode ? 'text-white' : 'text-slate-900'}>Dr. Piyush </span>
+                    <span className="bg-gradient-to-r from-gold-400 via-amber-300 to-gold-500 bg-clip-text text-transparent">
+                      Charan
+                    </span>
+                  </h1>
+
+                  <p className="text-lg sm:text-xl font-medium text-royal-400">
+                    Ph.D. • Chartered Engineer [India] • FIETE • SMIEEE • LMISTE • LMIEI
+                  </p>
+
+                  <p className={`text-base sm:text-lg leading-relaxed max-w-2xl ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                    {data.profile.tagline}. Associate Professor with over 14 years of research and teaching excellence, leading academic structuring in Robotics & AI, wireless sensor protocols, and data-driven intelligent systems.
+                  </p>
+
+                  {/* Verified Credential Badges Row */}
+                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-2">
+                    <span className="px-3 py-1 text-xs rounded-md bg-navy-850 border border-royal-500/30 text-royal-300 font-mono">
+                      IEEE Senior Member (#92668459)
+                    </span>
+                    <span className="px-3 py-1 text-xs rounded-md bg-navy-850 border border-royal-500/30 text-royal-300 font-mono">
+                      IETE Fellow (#F-506999)
+                    </span>
+                    <span className="px-3 py-1 text-xs rounded-md bg-navy-850 border border-royal-500/30 text-royal-300 font-mono">
+                      Chartered Engineer (IEI)
+                    </span>
+                    <span className="px-3 py-1 text-xs rounded-md bg-navy-850 border border-royal-500/30 text-royal-300 font-mono">
+                      Google Certified Educator (L1 & L2)
+                    </span>
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+                    <button
+                      onClick={() => setShowCvModal(true)}
+                      className="px-6 py-3 rounded-xl font-semibold text-sm bg-gradient-to-r from-royal-600 via-blue-600 to-royal-700 hover:from-royal-500 hover:to-royal-600 text-white shadow-royal-glow transition-all transform hover:-translate-y-0.5 flex items-center space-x-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <span>Download Full Academic CV</span>
+                    </button>
+
+                    <a
+                      href="#publications"
+                      className="px-6 py-3 rounded-xl font-semibold text-sm border border-slate-700 hover:border-gold-500 text-slate-300 hover:text-gold-400 bg-navy-900/60 transition-all flex items-center space-x-2"
+                    >
+                      <span>Explore Publications</span>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </a>
+
+                    <a
+                      href="#contact"
+                      className="px-5 py-3 rounded-xl font-semibold text-sm border border-gold-500/40 text-gold-400 hover:bg-gold-500 hover:text-navy-950 transition-all"
+                    >
+                      Research Collaboration
+                    </a>
+                  </div>
+
+                  {/* Direct Social & Academic Links */}
+                  <div className="flex items-center justify-center lg:justify-start space-x-4 pt-4 text-slate-400">
+                    <span className="text-xs uppercase tracking-wider font-semibold text-slate-500">Profiles:</span>
+                    <a href="https://www.linkedin.com/in/piyushcharan/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors" title="LinkedIn">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://scholar.google.com/citations?user=Ya6qBd8AAAAJ" target="_blank" rel="noopener noreferrer" className="hover:text-royal-400 transition-colors" title="Google Scholar">
+                      <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
+                    </a>
+                    <a href="https://www.scopus.com/authid/detail.uri?authorId=57200214468" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors text-xs font-bold border border-current px-1.5 py-0.5 rounded" title="Scopus">
+                      SCOPUS
+                    </a>
+                    <a href="https://vidwan.inflibnet.ac.in/profile/313745" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors text-xs font-bold border border-current px-1.5 py-0.5 rounded" title="Vidwan">
+                      VIDWAN
+                    </a>
+                    <a href="https://www.slideshare.net/piyush210987" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors text-xs font-bold border border-current px-1.5 py-0.5 rounded" title="SlideShare">
+                      SlideShare
+                    </a>
+                  </div>
+
+                </div>
+
+                {/* Right Portrait & Floating Credentials Card */}
+                <div className="lg:col-span-5 flex justify-center relative">
+                  <div className="relative">
+                    
+                    {/* Glowing gold border ring */}
+                    <div className="absolute -inset-1.5 bg-gradient-to-r from-gold-500 via-royal-500 to-amber-500 rounded-3xl blur-md opacity-60 gold-pulse"></div>
+
+                    {/* Main Portrait Frame */}
+                    <div className="relative w-72 sm:w-84 md:w-96 rounded-3xl overflow-hidden bg-navy-900 border-2 border-gold-500/80 shadow-2xl">
+                      <img
+                        src={data.profile.photoUrl}
+                        alt="Dr. Piyush Charan"
+                        className="w-full h-auto object-cover object-top hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-navy-950 via-navy-950/80 to-transparent p-5 text-center">
+                        <p className="text-white font-bold text-base">Dr. Piyush Charan</p>
+                        <p className="text-xs text-gold-400 font-medium">Associate Professor & Chartered Engineer</p>
+                      </div>
+                    </div>
+
+                    {/* Floating Achievement Mini Badge 1 */}
+                    <div className="absolute -top-4 -left-6 bg-navy-900/90 backdrop-blur-md border border-royal-500/40 rounded-xl p-3 shadow-lg flex items-center space-x-2 hidden sm:flex">
+                      <div className="w-8 h-8 rounded-lg bg-royal-600/30 flex items-center justify-center text-royal-400 font-bold text-sm">
+                        14+
+                      </div>
+                      <div className="text-left">
+                        <p className="text-[10px] text-slate-400 leading-tight">Dedicated</p>
+                        <p className="text-xs font-bold text-white">Years in Academia</p>
+                      </div>
+                    </div>
+
+                    {/* Floating Achievement Mini Badge 2 */}
+                    <div className="absolute -bottom-4 -right-6 bg-navy-900/90 backdrop-blur-md border border-gold-500/40 rounded-xl p-3 shadow-lg flex items-center space-x-2 hidden sm:flex">
+                      <div className="w-8 h-8 rounded-lg bg-gold-500/20 flex items-center justify-center text-gold-400 font-bold text-sm">
+                        🏆
+                      </div>
+                      <div className="text-left">
+                        <p className="text-[10px] text-slate-400 leading-tight">Academic Excellence</p>
+                        <p className="text-xs font-bold text-gold-400">Awardee (IEI 2025)</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Quick Metrics Counter Ribbon */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                {data.stats.map((stat, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-4 rounded-2xl border text-center transition-all hover:scale-105 ${
+                      darkMode ? 'bg-navy-900/80 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200 shadow-sm hover:border-royal-500'
+                    }`}
+                  >
+                    <div className="text-3xl font-extrabold bg-gradient-to-r from-gold-400 to-amber-500 bg-clip-text text-transparent">
+                      {stat.value}{stat.suffix}
+                    </div>
+                    <div className="text-xs font-medium text-slate-400 mt-1 leading-snug">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ==================== ABOUT ME SECTION ==================== */}
+          <section id="about" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Profile & Philosophy</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">About Dr. Piyush Charan</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                
+                {/* Academic Biography & Career Vision */}
+                <div className="lg:col-span-7 space-y-6">
+                  <div className={`p-6 sm:p-8 rounded-2xl border ${darkMode ? 'bg-navy-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <h3 className="text-xl font-bold mb-4 flex items-center space-x-2 text-gold-400">
+                      <span>Academic Biography & Journey</span>
+                    </h3>
+                    <p className={`text-base leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                      {data.profile.bio}
+                    </p>
+                    
+                    <div className="mt-6 pt-6 border-t border-slate-800">
+                      <h4 className="text-sm font-semibold uppercase tracking-wider text-royal-400 mb-2">Career Vision & Ethos</h4>
+                      <p className={`text-sm italic leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                        "{data.profile.vision}"
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Languages Known */}
+                  <div className={`p-6 rounded-2xl border ${darkMode ? 'bg-navy-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-gold-400 mb-4">Linguistic Proficiencies</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {data.skills.languages.map((lang, idx) => (
+                        <div key={idx} className="p-3 rounded-xl bg-navy-850/80 border border-slate-800">
+                          <p className="font-bold text-sm text-white">{lang.language}</p>
+                          <p className="text-xs text-royal-400 mt-0.5">{lang.proficiency}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Technical Skills & Competencies */}
+                <div className="lg:col-span-5 space-y-6">
+                  <div className={`p-6 sm:p-8 rounded-2xl border ${darkMode ? 'bg-navy-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+                    <h3 className="text-lg font-bold mb-5 text-white flex items-center space-x-2">
+                      <span className="text-gold-400">⚡</span>
+                      <span>Technical & Research Proficiencies</span>
+                    </h3>
+
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Programming & Scripting</p>
+                        <div className="flex flex-wrap gap-2">
+                          {data.skills.programming.map((skill, idx) => (
+                            <span key={idx} className="px-3 py-1 text-xs rounded-lg bg-royal-900/40 border border-royal-700/50 text-royal-200 font-mono">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Simulators & Analytical Platforms</p>
+                        <div className="flex flex-wrap gap-2">
+                          {data.skills.simulationTools.map((tool, idx) => (
+                            <span key={idx} className="px-3 py-1 text-xs rounded-lg bg-amber-950/40 border border-gold-600/50 text-gold-200 font-mono">
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Core Domain Specializations</p>
+                        <div className="space-y-2">
+                          {data.skills.domainExpertise.map((domain, idx) => (
+                            <div key={idx} className="flex items-center space-x-2 text-xs text-slate-300">
+                              <span className="w-1.5 h-1.5 rounded-full bg-gold-400"></span>
+                              <span>{domain}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Certified Badges Spotlight */}
+                  <div className="p-5 rounded-2xl border border-gold-500/30 bg-gradient-to-br from-navy-900 via-navy-850 to-navy-900 flex items-center space-x-4">
+                    <img src={data.profile.googleBadgesUrl} alt="Google Certified Educator" className="h-14 object-contain" />
+                    <div>
+                      <p className="text-xs font-bold text-gold-400 uppercase tracking-wide">Google for Education</p>
+                      <p className="text-sm font-extrabold text-white">Certified Educator Level 1 & Level 2</p>
+                      <p className="text-xs text-slate-400">Gemini Certified Faculty • IBM Data Science</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== ACADEMIC QUALIFICATIONS ==================== */}
+          <section id="qualifications" className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-royal-400 uppercase">Educational Heritage</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Academic Qualifications</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              <div className="relative border-l-2 border-royal-600/40 ml-4 md:ml-32 space-y-12">
+                {data.education.map((edu, idx) => (
+                  <div key={idx} className="relative pl-8 md:pl-10 group">
+                    
+                    {/* Timeline Node Icon */}
+                    <div className="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-navy-950 border-2 border-gold-500 flex items-center justify-center text-gold-400 shadow-md group-hover:scale-110 transition-transform">
+                      <span className="text-xs font-bold">🎓</span>
+                    </div>
+
+                    <div className={`p-6 rounded-2xl border transition-all ${
+                      darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/40' : 'bg-white border-slate-200 hover:shadow-md'
+                    }`}>
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span className="text-xs font-semibold px-2.5 py-1 rounded bg-royal-700/20 text-royal-400 border border-royal-500/30">
+                          {edu.period}
+                        </span>
+                        <span className="text-xs font-bold text-gold-400">
+                          {edu.grade}
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-gold-400 transition-colors">
+                        {edu.degree}
+                      </h3>
+
+                      <p className="text-sm font-semibold text-slate-300 mt-1">
+                        {edu.institution}
+                      </p>
+
+                      <p className={`text-sm mt-3 leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                        {edu.details}
+                      </p>
+
+                      {edu.thesisUrl && (
+                        <div className="mt-4 pt-3 border-t border-slate-800">
+                          <a
+                            href={edu.thesisUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-1.5 text-xs font-bold text-gold-400 hover:text-gold-300 transition-colors"
+                          >
+                            <span>Access Doctoral Thesis in Shodhganga Repository</span>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== PROFESSIONAL EXPERIENCE ==================== */}
+          <section id="experience" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Career Journey</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Professional Experience</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              <div className="space-y-8">
+                {data.experience.map((exp, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-6 sm:p-8 rounded-2xl border transition-all ${
+                      darkMode ? 'bg-navy-900/70 border-slate-800 hover:border-royal-500/50' : 'bg-white border-slate-200 shadow-sm'
+                    }`}
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                      <div>
+                        <div className="flex items-center space-x-3">
+                          <h3 className="text-xl font-bold text-white">{exp.designation}</h3>
+                          <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-gold-500/20 text-gold-400 border border-gold-500/30">
+                            {exp.type}
+                          </span>
+                        </div>
+                        <p className="text-base font-semibold text-royal-400 mt-1">{exp.institution}</p>
+                        <p className="text-xs text-slate-400">{exp.department}</p>
+                      </div>
+
+                      <div className="px-4 py-1.5 rounded-lg bg-navy-850 border border-slate-700 text-xs font-mono text-slate-300 self-start md:self-auto">
+                        {exp.period}
+                      </div>
+                    </div>
+
+                    <ul className="space-y-2.5 mt-4">
+                      {exp.highlights.map((point, pIdx) => (
+                        <li key={pIdx} className="flex items-start space-x-3 text-sm text-slate-300">
+                          <svg className="w-4 h-4 text-gold-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="leading-relaxed">{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              {/* Industrial Trainings Timeline Card */}
+              <div className="mt-12 p-6 sm:p-8 rounded-2xl border border-royal-700/40 bg-navy-900/40">
+                <h3 className="text-lg font-bold text-white mb-6 flex items-center space-x-2">
+                  <span className="text-gold-400">⚙️</span>
+                  <span>Early Career Industrial Trainings & Field Work</span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {data.trainings.map((trn, idx) => (
+                    <div key={idx} className="p-4 rounded-xl bg-navy-850/60 border border-slate-800">
+                      <p className="text-xs font-bold text-gold-400">{trn.period}</p>
+                      <h4 className="text-sm font-bold text-white mt-1 leading-snug">{trn.title}</h4>
+                      <p className="text-xs font-semibold text-royal-400 mt-1">{trn.organization}</p>
+                      <p className="text-xs text-slate-400 mt-2">{trn.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== TEACHING PORTFOLIO ==================== */}
+          <section id="teaching" className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-royal-400 uppercase">Pedagogic Excellence</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Teaching & Mentoring Portfolio</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              {/* Courses Taught Grid */}
+              <div className="mb-12">
+                <h3 className="text-lg font-bold text-white mb-6 flex items-center space-x-2">
+                  <span className="text-gold-400">📖</span>
+                  <span>Courses Taught (UG / PG / Management)</span>
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {data.teachingPortfolio.courses.map((crs, idx) => (
+                    <div key={idx} className="p-5 rounded-2xl bg-navy-900/60 border border-slate-800">
+                      <div className="flex items-center justify-between text-xs mb-2">
+                        <span className="px-2 py-0.5 rounded bg-royal-700/20 text-royal-300 font-bold border border-royal-500/30">
+                          {crs.level}
+                        </span>
+                        <span className="text-slate-400 font-mono text-[11px]">{crs.tools}</span>
+                      </div>
+                      <h4 className="text-base font-bold text-white mb-2">{crs.name}</h4>
+                      <p className="text-xs text-slate-400 leading-relaxed">{crs.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Methodologies & Lab Development */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                {/* Methodologies */}
+                <div className="p-6 sm:p-8 rounded-2xl bg-navy-900/70 border border-slate-800">
+                  <h3 className="text-lg font-bold text-gold-400 mb-4 flex items-center space-x-2">
+                    <span>💡</span>
+                    <span>Innovative Pedagogic Methodologies</span>
+                  </h3>
+                  <ul className="space-y-3">
+                    {data.teachingPortfolio.methodologies.map((method, idx) => (
+                      <li key={idx} className="flex items-start space-x-3 text-sm text-slate-300">
+                        <span className="w-2 h-2 rounded-full bg-gold-400 flex-shrink-0 mt-1.5"></span>
+                        <span className="leading-relaxed">{method}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Laboratory Development & Initiatives */}
+                <div className="p-6 sm:p-8 rounded-2xl bg-navy-900/70 border border-slate-800">
+                  <h3 className="text-lg font-bold text-royal-400 mb-4 flex items-center space-x-2">
+                    <span>🔬</span>
+                    <span>Laboratory & Testbed Development</span>
+                  </h3>
+                  <ul className="space-y-3">
+                    {data.teachingPortfolio.labDevelopment.map((lab, idx) => (
+                      <li key={idx} className="flex items-start space-x-3 text-sm text-slate-300">
+                        <span className="w-2 h-2 rounded-full bg-royal-400 flex-shrink-0 mt-1.5"></span>
+                        <span className="leading-relaxed">{lab}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== RESEARCH INTERESTS & FOCUS AREAS ==================== */}
+          <section id="research" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Scholarly Domains</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Research Focus & Innovations</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-sm text-slate-400 mt-4">
+                  Interdisciplinary research driving energy efficiency, edge AI diagnostics, drone automation, and IoT cyber-physical resilience.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                {/* Domain Card 1 */}
+                <div className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
+                  darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                }`}>
+                  <div className="w-12 h-12 rounded-xl bg-royal-600/20 text-royal-400 flex items-center justify-center text-2xl mb-4">
+                    📡
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Wireless Sensor Networks & Energy Protocols</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Pioneered the Distributed Energy Aware Routing (DEAR) protocol with cooperative caching schemes in IEEE 802.15.4 architectures, drastically cutting retransmissions and elongating sensor lifespan.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-gold-400 font-mono">DEAR Protocol</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-gold-400 font-mono">Cooperative Caching</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-gold-400 font-mono">QualNet / NS2</span>
+                  </div>
+                </div>
+
+                {/* Domain Card 2 */}
+                <div className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
+                  darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                }`}>
+                  <div className="w-12 h-12 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-2xl mb-4">
+                    🧠
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Deep Learning in Medical Imaging & Healthcare</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Multi-pyramidal attention networks (TATIMPA) and transfer learning architectures for gastrointestinal organ segmentation, brain cancer classification, Alzheimer’s identification, and retinoblastoma ocular detection.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-royal-400 font-mono">TATIMPA Network</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-royal-400 font-mono">Medical Segmentation</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-royal-400 font-mono">Biomedical DSP</span>
+                  </div>
+                </div>
+
+                {/* Domain Card 3 */}
+                <div className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
+                  darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                }`}>
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-4">
+                    🛡️
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Cloud Digital Forensics & Cybercrime Detection</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Holder of granted German Patent (DE 2024 102 105) for Cloud-Based Digital Forensics. Researching intelligent anomaly identification in 6G clouds, intrusion localization, and health insurance fraud detection.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-emerald-400 font-mono">German Patent</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-emerald-400 font-mono">Cloud Forensics</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-emerald-400 font-mono">Fraud Detection</span>
+                  </div>
+                </div>
+
+                {/* Domain Card 4 */}
+                <div className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
+                  darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                }`}>
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl mb-4">
+                    🏙️
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Smart Cities, Pollution Sensing & Green Micro-Grids</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Published patents in smart environmental monitoring enclosures, AI-driven solid waste image classification via BiGRU, and performance optimization of 100kW+ institutional grid-interactive solar PV plants.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-amber-400 font-mono">Urban WSN</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-amber-400 font-mono">Solar PV Microgrids</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-amber-400 font-mono">Attention BiGRU</span>
+                  </div>
+                </div>
+
+                {/* Domain Card 5 */}
+                <div className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
+                  darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                }`}>
+                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl mb-4">
+                    🚁
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Autonomous Robotics & Precision Agriculture Drones</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Structuring academic robotics curricula at MRU. Researching deep neural networks for computer-vision driven targeted crop spraying with smart UAVs, minimizing agrochemical wastage and boosting yield.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-purple-400 font-mono">Smart Drones</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-purple-400 font-mono">Precision Ag</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-purple-400 font-mono">DNN Vision</span>
+                  </div>
+                </div>
+
+                {/* Domain Card 6 */}
+                <div className={`p-6 rounded-2xl border transition-all hover:scale-[1.02] ${
+                  darkMode ? 'bg-navy-900/60 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                }`}>
+                  <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl mb-4">
+                    ⌚
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Biometric Wearables & Non-Invasive Diagnostics</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                    Holder of granted UK and Indian designs for continuous glucose monitors, wearable health jackets, smart driver seat belts with cardiac ignition control, and infant distress monitoring bands.
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-cyan-400 font-mono">UK Design Grants</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-cyan-400 font-mono">Cardiac Seatbelt</span>
+                    <span className="px-2 py-0.5 text-[10px] rounded bg-navy-850 text-cyan-400 font-mono">Telemetry</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== RESEARCH PROJECTS & COLLABORATIONS ==================== */}
+          <section id="projects" className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-royal-400 uppercase">Initiatives & Grants</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Research Projects & Collaborations</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-sm text-slate-400 mt-4">
+                  Translational engineering research spanning funded prototypes, clean energy institutional assessments, and international cross-disciplinary collaborations.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data.researchProjects.map((prj, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-6 rounded-2xl border flex flex-col justify-between transition-all hover:scale-[1.02] ${
+                      darkMode ? 'bg-navy-900/70 border-slate-800 hover:border-gold-500/50' : 'bg-white border-slate-200'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-3">
+                        <span className="px-2.5 py-0.5 rounded font-bold bg-royal-700/20 text-royal-300 border border-royal-500/30">
+                          {prj.status}
+                        </span>
+                        <span className="font-mono text-slate-400 text-xs">{prj.period}</span>
+                      </div>
+
+                      <h3 className="text-base font-bold text-white mb-2 leading-snug">
+                        {prj.title}
+                      </h3>
+
+                      <p className="text-xs font-semibold text-gold-400 mb-2">
+                        {prj.type}
+                      </p>
+
+                      <p className="text-xs text-slate-400 leading-relaxed mb-4">
+                        {prj.desc}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-slate-800/80 space-y-1.5 text-xs">
+                      <p className="text-slate-300">
+                        <span className="text-slate-500 font-semibold">Outcome:</span> {prj.outcome}
+                      </p>
+                      <p className="text-slate-400 text-[11px] truncate" title={prj.collaborators}>
+                        <span className="text-slate-500 font-semibold">Collaborators:</span> {prj.collaborators}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== PUBLICATIONS REPOSITORY ==================== */}
+          <section id="publications" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Scholarly Record</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Authored Books & Publications</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-sm text-slate-400 mt-4">
+                  Over 35+ verified peer-reviewed publications, 6 authored textbooks, book chapters with Springer, De Gruyter & CRC Press, and Scopus Q1/Q2 research papers.
+                </p>
+              </div>
+
+              {/* Books Showcase Banner */}
+              <div className="mb-14 p-6 sm:p-8 rounded-2xl border border-gold-500/40 bg-gradient-to-r from-navy-900 via-navy-850 to-navy-900 shadow-xl">
+                <div className="flex items-center space-x-3 mb-6">
+                  <span className="text-2xl">📚</span>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Authored Academic Textbooks (6 Books)</h3>
+                    <p className="text-xs text-gold-400">Published with International & National Academic Publishers (RK Publications, SIPH, Aargon Press)</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {data.books.map((book, idx) => (
+                    <div key={idx} className="p-4 rounded-xl bg-navy-950/80 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between text-[11px] text-gold-400 font-mono mb-1">
+                          <span>{book.year}</span>
+                          <span>ISBN: {book.isbn}</span>
+                        </div>
+                        <h4 className="text-sm font-bold text-white leading-snug">{book.title}</h4>
+                        <p className="text-xs text-slate-400 mt-2">{book.authors}</p>
+                      </div>
+                      <div className="mt-3 pt-2 border-t border-slate-800 text-xs font-semibold text-royal-400">
+                        {book.publisher}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Search & Filter Controls */}
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+                
+                {/* Search Bar */}
+                <div className="relative w-full md:w-96">
+                  <input
+                    type="text"
+                    value={pubSearchQuery}
+                    onChange={(e) => setPubSearchQuery(e.target.value)}
+                    placeholder="Search by title, author, year, venue, Scopus..."
+                    className="w-full px-4 py-2.5 pl-10 text-xs sm:text-sm rounded-xl bg-navy-900 border border-slate-700 focus:outline-none focus:border-gold-500 text-white placeholder-slate-500"
+                  />
+                  <svg className="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  {pubSearchQuery && (
+                    <button onClick={() => setPubSearchQuery('')} className="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white">
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                {/* Filter Pills */}
+                <div className="flex flex-wrap gap-2 w-full md:w-auto">
+                  {['All', 'Journal', 'Conference', 'Book Chapter'].map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setPublicationFilter(cat)}
+                      className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                        publicationFilter === cat
+                          ? 'bg-royal-600 text-white shadow-md'
+                          : 'bg-navy-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                      }`}
+                    >
+                      {cat} {cat === 'All' ? `(${data.publications.length})` : ''}
+                    </button>
+                  ))}
+                </div>
+
+              </div>
+
+              {/* Filtered Publication Cards List */}
+              <div className="space-y-4">
+                {filteredPublications.length === 0 ? (
+                  <div className="text-center py-12 text-slate-400 text-sm">
+                    No publications matching your query "{pubSearchQuery}".
+                  </div>
+                ) : (
+                  filteredPublications.map(pub => (
+                    <div
+                      key={pub.id}
+                      className={`p-5 rounded-2xl border transition-all ${
+                        darkMode ? 'bg-navy-900/60 border-slate-800/90 hover:border-royal-500/40' : 'bg-white border-slate-200 hover:shadow-sm'
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-royal-700/20 text-royal-300 border border-royal-500/30">
+                          {pub.year}
+                        </span>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                          {pub.type}
+                        </span>
+                        {pub.indexing && (
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded ${
+                            pub.indexing.includes('Q1') ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                            pub.indexing.includes('Q2') ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                            'bg-slate-800 text-gold-400'
+                          }`}>
+                            {pub.indexing}
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 className="text-base font-bold text-white leading-snug">
+                        {pub.title}
+                      </h4>
+
+                      <p className="text-xs text-slate-400 mt-2">
+                        <span className="text-slate-300 font-medium">Authors:</span> {pub.authors}
+                      </p>
+
+                      <p className="text-xs text-royal-400 mt-1 italic">
+                        {pub.venue} {pub.publisher ? `• ${pub.publisher}` : ''}
+                      </p>
+
+                      <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+                        {pub.doi ? (
+                          <a
+                            href={pub.doi}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gold-400 hover:underline flex items-center space-x-1 font-mono"
+                          >
+                            <span>DOI Link</span>
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        ) : (
+                          <span className="text-slate-500 italic">Peer Reviewed / Indexed</span>
+                        )}
+
+                        <button
+                          onClick={() => copyCitation(pub)}
+                          className="text-slate-400 hover:text-white flex items-center space-x-1 font-medium px-2 py-1 rounded hover:bg-slate-800 transition-colors"
+                        >
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                          <span>Copy Citation</span>
+                        </button>
+                      </div>
+
+                    </div>
+                  ))
+                )}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== PATENTS & INTELLECTUAL PROPERTY ==================== */}
+          <section id="patents" className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                <span className="text-xs font-bold tracking-widest text-royal-400 uppercase">Innovations & IP</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Patents, Design Grants & IP</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-sm text-slate-400 mt-4">
+                  13+ verified intellectual property rights across Germany, the United Kingdom, India, and Canada.
+                </p>
+              </div>
+
+              {/* Patent Filter Tabs */}
+              <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+                {['All', 'Granted', 'Design', 'Published', 'Copyright'].map(tab => (
+                  <button
+                    key={tab}
+                    onClick={() => setPatentFilter(tab)}
+                    className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
+                      patentFilter === tab
+                        ? 'bg-gold-500 text-navy-950 font-bold shadow-md'
+                        : 'bg-navy-900 border border-slate-800 text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              {/* Patents Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPatents.map(pat => (
+                  <div
+                    key={pat.id}
+                    className={`p-6 rounded-2xl border flex flex-col justify-between transition-all hover:scale-[1.02] ${
+                      pat.type.includes('Granted')
+                        ? 'bg-gradient-to-b from-navy-900 via-navy-850 to-navy-900 border-gold-500/50 shadow-gold-glow'
+                        : darkMode ? 'bg-navy-900/60 border-slate-800' : 'bg-white border-slate-200'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-3">
+                        <span className={`px-2.5 py-0.5 rounded font-mono font-bold ${
+                          pat.type.includes('Granted') ? 'bg-gold-500/20 text-gold-400 border border-gold-500/40' :
+                          pat.type.includes('Design') ? 'bg-royal-600/20 text-royal-300 border border-royal-500/30' :
+                          'bg-slate-800 text-slate-300'
+                        }`}>
+                          {pat.type}
+                        </span>
+                        <span className="text-slate-400 font-semibold">{pat.country}</span>
+                      </div>
+
+                      <h3 className="text-base font-bold text-white mb-2 leading-snug">
+                        {pat.title}
+                      </h3>
+
+                      <p className="text-xs font-mono text-gold-400 mb-2">
+                        {pat.patentNumber}
+                      </p>
+
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        {pat.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-slate-800/80 space-y-1 text-xs">
+                      <p className="text-slate-300">
+                        <span className="text-slate-500 font-semibold">Date:</span> {pat.dateOfGrant}
+                      </p>
+                      <p className="text-slate-400 text-[11px] truncate" title={pat.collaborators}>
+                        <span className="text-slate-500 font-semibold">Collaborators:</span> {pat.collaborators}
+                      </p>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== AWARDS & RECOGNITIONS ==================== */}
+          <section id="awards" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Honors & Accolades</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Awards & Recognitions</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              {/* Featured Award: Engineers Day 2025 with Photo */}
+              <div className="mb-14 p-6 sm:p-8 rounded-3xl border border-gold-500/50 bg-gradient-to-br from-navy-900 via-navy-850 to-navy-950 shadow-gold-glow">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                  
+                  <div className="lg:col-span-7 space-y-4">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-gold-500/20 text-gold-400 border border-gold-500/40">
+                      ★ Featured Academic Honor
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                      Academic Excellence Award
+                    </h3>
+                    <p className="text-sm font-semibold text-royal-400">
+                      Conferred by The Institution of Engineers (India), Faridabad Local Centre
+                    </p>
+                    <p className="text-xs text-gold-400 font-mono">
+                      58th Engineers Day • 15th September 2025 • Theme: "Deep Tech & Engineering Excellence"
+                    </p>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      Conferred to Dr. Piyush Charan by distinguished dignitaries and Chief Guest Shri R.K. Bishnoi (Chairman & Managing Director, NHPC) in recognition of meritorious academic excellence, innovative pedagogy, and impactful technological research in Wireless Networks and Robotics.
+                    </p>
+                  </div>
+
+                  <div className="lg:col-span-5">
+                    <div 
+                      onClick={() => setLightboxImg(data.profile.awardPhotoUrl)}
+                      className="cursor-pointer group relative rounded-2xl overflow-hidden border-2 border-gold-500/60 shadow-xl"
+                    >
+                      <img
+                        src={data.profile.awardPhotoUrl}
+                        alt="Dr. Piyush Charan receiving Academic Excellence Award"
+                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-navy-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold">
+                        Click to expand photo 🔍
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Other Honors Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {data.awards.filter(a => a.title !== "Academic Excellence Award").map((awd, idx) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-navy-900/60 border border-slate-800">
+                    <div className="text-2xl mb-3">🎖️</div>
+                    <h4 className="text-base font-bold text-white mb-1">{awd.title}</h4>
+                    <p className="text-xs font-semibold text-royal-400 mb-2">{awd.organization} ({awd.date})</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">{awd.description}</p>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== PROFESSIONAL MEMBERSHIPS ==================== */}
+          <section id="memberships" className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-royal-400 uppercase">Affiliations</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Professional Societies & Memberships</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {data.memberships.map((mem, idx) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-navy-900/70 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-3">
+                        <span className="px-2.5 py-0.5 rounded font-bold bg-royal-700/20 text-royal-300 border border-royal-500/30">
+                          {mem.type}
+                        </span>
+                        <span className="font-mono text-gold-400 text-xs">{mem.number}</span>
+                      </div>
+                      <h4 className="text-base font-bold text-white mb-1">{mem.role}</h4>
+                      <p className="text-xs font-semibold text-slate-300 mb-3">{mem.body}</p>
+                      <p className="text-xs text-slate-400 leading-relaxed">{mem.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== FDPS & MOOCS CERTIFICATIONS ==================== */}
+          <section id="fdps" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Lifelong Learning</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">FDPs, MOOCs & Certifications</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-sm text-slate-400 mt-4">
+                  25+ elite certifications with top marks from IIT Madras, IIT Kharagpur, IIT Bombay, IIT Roorkee, IISc Bangalore, IBM, and Google.
+                </p>
+              </div>
+
+              {/* FDP Category Selector */}
+              <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+                {data.fdpsAndMoocs.map((grp, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setFdpFilter(grp.category)}
+                    className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all ${
+                      fdpFilter === grp.category
+                        ? 'bg-royal-600 text-white font-bold shadow-md'
+                        : 'bg-navy-900 border border-slate-800 text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    {grp.category}
+                  </button>
+                ))}
+              </div>
+
+              {/* Filtered Courses List */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {data.fdpsAndMoocs.find(g => g.category === fdpFilter)?.courses.map((c, cIdx) => (
+                  <div key={cIdx} className="p-5 rounded-2xl bg-navy-900/60 border border-slate-800 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between text-xs mb-2">
+                        <span className="px-2 py-0.5 rounded bg-gold-500/20 text-gold-400 font-bold border border-gold-500/30">
+                          {c.highlight}
+                        </span>
+                        <span className="text-xs font-mono font-bold text-royal-400">{c.score}</span>
+                      </div>
+                      <h4 className="text-sm font-bold text-white leading-snug">{c.name}</h4>
+                      <p className="text-xs font-semibold text-slate-300 mt-1">{c.institute}</p>
+                    </div>
+                    <div className="mt-3 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400">
+                      Completed: {c.period}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== ACADEMIC LEADERSHIP ==================== */}
+          <section id="leadership" className="py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-royal-400 uppercase">Institutional Impact</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Academic Leadership & Roles</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {data.academicLeadership.map((ldr, idx) => (
+                  <div key={idx} className="p-6 sm:p-8 rounded-2xl bg-navy-900/70 border border-slate-800">
+                    <div className="flex items-center justify-between text-xs mb-2">
+                      <span className="font-bold text-gold-400">{ldr.institution}</span>
+                      <span className="font-mono text-slate-400">{ldr.period}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-3">{ldr.title}</h3>
+                    <p className="text-sm text-slate-300 leading-relaxed">{ldr.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== GALLERY & VISUAL MEDIA ==================== */}
+          <section id="gallery" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Moments</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Academic Media & Gallery</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {data.gallery.map((item, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => setLightboxImg(item.image)}
+                    className="cursor-pointer group rounded-2xl overflow-hidden border border-slate-800 bg-navy-900/60 hover:border-gold-500/50 transition-all"
+                  >
+                    <div className="h-64 overflow-hidden relative">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-navy-950/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold">
+                        View Full Image 🔍
+                      </div>
+                    </div>
+                    <div className="p-5">
+                      <p className="text-xs text-gold-400 font-mono">{item.date}</p>
+                      <h4 className="text-base font-bold text-white mt-1">{item.title}</h4>
+                      <p className="text-xs text-slate-400 mt-2">{item.caption}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== ACADEMIC REFERENCES ==================== */}
+          <section className="py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center max-w-2xl mx-auto mb-12">
+                <h3 className="text-xl font-bold text-white">Academic References & Mentors</h3>
+                <p className="text-xs text-slate-400 mt-1">Available for verification and scholarly credentials</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {data.references.map((ref, idx) => (
+                  <div key={idx} className="p-5 rounded-2xl bg-navy-900/50 border border-slate-800 text-center">
+                    <div className="w-10 h-10 rounded-full bg-royal-600/20 text-royal-400 flex items-center justify-center font-bold mx-auto mb-3">
+                      {ref.name[0]}
+                    </div>
+                    <h4 className="text-sm font-bold text-white">{ref.name}</h4>
+                    <p className="text-xs text-gold-400 mt-0.5">{ref.designation}</p>
+                    <p className="text-xs text-slate-400 mt-0.5">{ref.institution}</p>
+                    <p className="text-[11px] text-slate-500 mt-2 italic">{ref.relation}</p>
+                    <a href={`mailto:${ref.email}`} className="mt-3 block text-xs text-royal-400 hover:underline">
+                      {ref.email}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* ==================== CONTACT & COLLABORATION ==================== */}
+          <section id="contact" className={`py-20 border-t ${darkMode ? 'border-slate-800 bg-[#071120]' : 'border-slate-200 bg-slate-100/60'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-widest text-gold-400 uppercase">Get In Touch</span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold mt-2">Contact & Collaboration</h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-royal-600 to-gold-500 mx-auto mt-4 rounded-full"></div>
+                <p className="text-sm text-slate-400 mt-4">
+                  Open for invited talks, editorial roles, doctoral evaluation, funded research grants, and student mentorship.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                
+                {/* Contact Information & Channels */}
+                <div className="lg:col-span-5 space-y-6">
+                  
+                  <div className="p-6 sm:p-8 rounded-2xl bg-navy-900/70 border border-slate-800 space-y-5">
+                    
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 rounded-xl bg-royal-600/20 text-royal-400 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400 font-semibold">Official Email</p>
+                        <a href={`mailto:${data.profile.email}`} className="text-sm sm:text-base font-bold text-white hover:text-gold-400 transition-colors">
+                          {data.profile.email}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400 font-semibold">Telephone / WhatsApp</p>
+                        <a href={`tel:${data.profile.phone}`} className="text-sm sm:text-base font-bold text-white hover:text-gold-400 transition-colors">
+                          {data.profile.phone}
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400 font-semibold">Institutional Address</p>
+                        <p className="text-sm font-semibold text-white">Department of Robotics & AI / ECE</p>
+                        <p className="text-xs text-slate-400">Manav Rachna University, Sector 43, Delhi–Surajkund Road, Faridabad, Haryana, India</p>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* LinkedIn Connect Callout */}
+                  <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-900/50 via-navy-900 to-navy-850 border border-royal-500/40">
+                    <h4 className="text-sm font-bold text-white flex items-center space-x-2">
+                      <svg className="w-4 h-4 text-blue-400 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                      <span>Connect on LinkedIn</span>
+                    </h4>
+                    <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                      Follow academic updates, recent keynotes, publications, and student mentoring achievements directly on LinkedIn.
+                    </p>
+                    <a
+                      href={data.profile.socialLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block px-4 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors"
+                    >
+                      View LinkedIn Profile →
+                    </a>
+                  </div>
+
+                </div>
+
+                {/* Validated Collaboration Form */}
+                <div className="lg:col-span-7">
+                  <form onSubmit={handleContactSubmit} className="p-6 sm:p-8 rounded-2xl bg-navy-900/70 border border-slate-800 space-y-4">
+                    <h3 className="text-xl font-bold text-white mb-2">Send an Inquiry / Message</h3>
+                    
+                    {contactStatus === 'success' && (
+                      <div className="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-sm">
+                        ✓ Thank you! Your message has been prepared and your email application has been launched to deliver it directly to Dr. Piyush Charan.
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 mb-1">Your Full Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          placeholder="Prof. / Dr. / Mr. / Ms."
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white text-sm focus:border-gold-500 focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-slate-300 mb-1">Your Email Address *</label>
+                        <input
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          placeholder="name@university.edu"
+                          className="w-full px-3.5 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white text-sm focus:border-gold-500 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Subject / Area of Interest *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.subject}
+                        onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                        placeholder="Research Collaboration / Invited Talk / MOOC Mentorship"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white text-sm focus:border-gold-500 focus:outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Message Details *</label>
+                      <textarea
+                        required
+                        rows="4"
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        placeholder="Please write the message or collaborative proposal..."
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-navy-950 border border-slate-700 text-white text-sm focus:border-gold-500 focus:outline-none"
+                      ></textarea>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={contactStatus === 'sending'}
+                      className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-royal-600 via-blue-600 to-royal-700 hover:from-royal-500 hover:to-royal-600 text-white shadow-md transition-all"
+                    >
+                      {contactStatus === 'sending' ? 'Transmitting...' : 'Send Message to Dr. Charan'}
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+
+            </div>
+          </section>
+
+          {/* ==================== FOOTER ==================== */}
+          <footer className="py-12 border-t border-slate-800 bg-navy-950 no-print">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                
+                <div className="text-center md:text-left">
+                  <p className="text-sm font-bold text-white">Dr. Piyush Charan, Ph.D.</p>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Associate Professor • Chartered Engineer [India] • SMIEEE • FIETE
+                  </p>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Department of Robotics & AI / ECE • Manav Rachna University, Faridabad
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-6 text-xs text-slate-400">
+                  <a href="#home" className="hover:text-gold-400 transition-colors">Top</a>
+                  <a href="#about" className="hover:text-gold-400 transition-colors">About</a>
+                  <a href="#publications" className="hover:text-gold-400 transition-colors">Publications</a>
+                  <a href="#patents" className="hover:text-gold-400 transition-colors">Patents</a>
+                  <button onClick={() => setShowCvModal(true)} className="hover:text-gold-400 transition-colors font-semibold">
+                    Download CV
+                  </button>
+                </div>
+
+                <div className="text-center md:text-right">
+                  <p className="text-xs text-slate-500">
+                    © {new Date().getFullYear()} Dr. Piyush Charan. All Rights Reserved.
+                  </p>
+                  <p className="text-[10px] text-slate-600 mt-0.5">
+                    Official Academic E-Portfolio • Responsive & Accessible
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </footer>
+
+          {/* ==================== FULL CV MODAL & PRINT VIEW ==================== */}
+          {showCvModal && (
+            <div className="fixed inset-0 z-50 overflow-y-auto bg-navy-950/80 backdrop-blur-md flex items-center justify-center p-4">
+              <div className="relative w-full max-w-4xl bg-white text-slate-900 rounded-2xl shadow-2xl overflow-hidden my-8 border border-slate-300">
+                
+                {/* Modal Top Bar */}
+                <div className="px-6 py-4 bg-navy-900 text-white flex items-center justify-between no-print">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gold-400 text-lg">📄</span>
+                    <h3 className="font-bold text-base">Curriculum Vitae — Dr. Piyush Charan</h3>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => window.print()}
+                      className="px-4 py-1.5 text-xs font-bold rounded-lg bg-gold-500 text-navy-950 hover:bg-gold-400 transition-all shadow"
+                    >
+                      🖨️ Print / Save as PDF
+                    </button>
+                    <button
+                      onClick={() => setShowCvModal(false)}
+                      className="text-slate-400 hover:text-white text-xl font-bold px-2"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+
+                {/* Printable CV Document Content */}
+                <div className="p-8 sm:p-12 space-y-8 text-xs sm:text-sm leading-relaxed max-h-[80vh] overflow-y-auto font-sans">
+                  
+                  {/* Header */}
+                  <div className="border-b-2 border-slate-800 pb-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div className="text-center sm:text-left">
+                      <h1 className="text-2xl sm:text-3xl font-extrabold text-navy-900">Dr. Piyush Charan</h1>
+                      <p className="text-sm font-semibold text-royal-700 mt-1">
+                        Associate Professor | Chartered Engineer [India] | FIETE | SMIEEE
+                      </p>
+                      <p className="text-xs text-slate-600 mt-1">
+                        Department of Electronics & Communication Engineering / Robotics and Artificial Intelligence
+                      </p>
+                      <p className="text-xs text-slate-600">
+                        Manav Rachna University, Faridabad, Haryana, India
+                      </p>
+                      <p className="text-xs font-mono text-slate-700 mt-1">
+                        Email: er.piyush.charan@gmail.com | Phone: +91 9559313115
+                      </p>
+                    </div>
+
+                    <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gold-600 shadow-md flex-shrink-0">
+                      <img src={data.profile.photoUrl} alt="Dr. Piyush Charan" className="w-full h-full object-cover object-top" />
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  <div>
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-royal-800 border-b border-slate-300 pb-1 mb-2">
+                      Professional Summary
+                    </h2>
+                    <p className="text-slate-700 leading-normal">
+                      {data.profile.bio}
+                    </p>
+                  </div>
+
+                  {/* Education */}
+                  <div>
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-royal-800 border-b border-slate-300 pb-1 mb-3">
+                      Academic Qualifications
+                    </h2>
+                    <div className="space-y-3">
+                      {data.education.map((e, idx) => (
+                        <div key={idx} className="flex flex-col sm:flex-row sm:justify-between">
+                          <div>
+                            <p className="font-bold text-slate-900">{e.degree}</p>
+                            <p className="text-slate-600">{e.institution}</p>
+                            <p className="text-[11px] text-slate-500 italic">{e.details}</p>
+                          </div>
+                          <div className="sm:text-right font-mono text-xs text-slate-700 mt-1 sm:mt-0 flex-shrink-0">
+                            <p>{e.period}</p>
+                            <p className="font-bold text-royal-700">{e.grade}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Experience */}
+                  <div>
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-royal-800 border-b border-slate-300 pb-1 mb-3">
+                      Professional Experience
+                    </h2>
+                    <div className="space-y-4">
+                      {data.experience.map((exp, idx) => (
+                        <div key={idx}>
+                          <div className="flex flex-col sm:flex-row sm:justify-between font-bold text-slate-900">
+                            <span>{exp.designation} — {exp.institution}</span>
+                            <span className="font-mono text-xs text-slate-600">{exp.period}</span>
+                          </div>
+                          <p className="text-xs text-royal-700 font-semibold">{exp.department}</p>
+                          <ul className="list-disc pl-5 mt-1 space-y-1 text-slate-700 text-xs">
+                            {exp.highlights.slice(0, 3).map((h, hIdx) => (
+                              <li key={hIdx}>{h}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Key Books & Publications Highlights */}
+                  <div>
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-royal-800 border-b border-slate-300 pb-1 mb-3">
+                      Selected Scholarly Publications & Books (Authored 6 Textbooks, 35+ Papers)
+                    </h2>
+                    <div className="space-y-2 text-xs">
+                      {data.books.slice(0, 4).map((b, idx) => (
+                        <p key={idx} className="text-slate-800">
+                          <strong>[Book]</strong> {b.authors} ({b.year}). <em>"{b.title}"</em>, {b.publisher}, ISBN: {b.isbn}.
+                        </p>
+                      ))}
+                      {data.publications.slice(0, 5).map((p, idx) => (
+                        <p key={idx} className="text-slate-800">
+                          <strong>[Paper]</strong> {p.authors} ({p.year}). "{p.title}", <em>{p.venue}</em> ({p.indexing}).
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Patents */}
+                  <div>
+                    <h2 className="text-sm font-bold uppercase tracking-wider text-royal-800 border-b border-slate-300 pb-1 mb-3">
+                      Selected Granted Patents & Intellectual Property
+                    </h2>
+                    <div className="space-y-2 text-xs">
+                      {data.patents.slice(0, 6).map((pat, idx) => (
+                        <p key={idx} className="text-slate-800">
+                          <strong>• {pat.title}</strong> — {pat.type} ({pat.country}), {pat.patentNumber}, {pat.dateOfGrant}.
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Signature Section */}
+                  <div className="pt-8 border-t border-slate-300 flex justify-between items-end">
+                    <div>
+                      <p className="text-xs text-slate-500">Date: {new Date().toLocaleDateString('en-GB')}</p>
+                      <p className="text-xs text-slate-500">Place: Faridabad, India</p>
+                    </div>
+
+                    <div className="text-right">
+                      <div className="h-14 mb-1 flex justify-end">
+                        <img src={data.profile.signatureUrl} alt="Dr. Piyush Charan Signature" className="h-full object-contain" />
+                      </div>
+                      <p className="font-bold text-sm text-slate-900">Dr. Piyush Charan</p>
+                      <p className="text-xs text-slate-600">Associate Professor & Chartered Engineer</p>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* ==================== LIGHTBOX MODAL ==================== */}
+          {lightboxImg && (
+            <div 
+              onClick={() => setLightboxImg(null)}
+              className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-pointer"
+            >
+              <div className="relative max-w-4xl max-h-[90vh]">
+                <img src={lightboxImg} alt="Enlarged visual" className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl" />
+                <p className="text-center text-xs text-slate-400 mt-3">Click anywhere to close</p>
+              </div>
+            </div>
+          )}
+
+        </div>
+      );
+    }
+
+    // Mount React App
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
